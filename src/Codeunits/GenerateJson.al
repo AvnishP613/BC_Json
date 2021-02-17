@@ -162,6 +162,87 @@ codeunit 50100 GenerateJson
 
     end;
 
+
+
+    local procedure CreateTextFile(var SInvH: Record "Sales Invoice Header")
+    var
+        // Sinvh: Record "Sales Invoice Header";
+        sinvline: Record "Sales Invoice Line";
+        Outstream1: OutStream;
+        Instream1: InStream;
+        FileName: Text;
+        Ch: Char;
+        ChNew: Char;
+        Tab: Text[1];
+        LineCount: Integer;
+        CRLF: Text[2];
+        //     CRLF: Text[2];
+        TempBLOB: Codeunit "Temp Blob";
+        Fileva: File;
+        InbSalesDocHeader: Record "Sales Invoice Header";
+        InbSalesDocumentLine: Record "Sales Invoice Line";
+
+    begin
+        //Fileva.TextMode
+        FileName := 'Testing.txt';
+
+        Ch := 9;
+        chnew := 13;
+        Tab := Format(Ch);
+        CRLF[1] := 13;
+        CRLF[2] := 10;
+
+        if InbSalesDocHeader.FindFirst() then;
+
+
+        TempBLOB.CreateOutStream(Outstream1);//, TextEncoding::Windows);
+        OutStream1.WriteTexT(InbSalesDocHeader."No." + Tab + InbSalesDocHeader."Sell-to Customer No." + Tab + InbSalesDocHeader."Sell-to Customer Name" + Tab +
+           InbSalesDocHeader."Sell-to County");
+        //CSA.GS 06/08/2018 write blank line between segments>>
+        OutStream1.WriteText(CRLF);
+        OutStream1.WriteText(CRLF);
+        //   OutStream1.WriteTexT('');
+        // OutStream1.WriteTexT('');
+        //     //<<
+        // InbSalesDocumentLine.SetRange("Document No.", InbSalesDocHeader."No.");
+        if InbSalesDocumentLine.FindFirst then
+            repeat
+                //             // LINES
+                OutStream1.WriteTexT(InbSalesDocumentLine."No." + Tab + InbSalesDocumentLine.Description + Tab + InbSalesDocumentLine."Document No." + Tab + format(InbSalesDocumentLine.Quantity));
+                // Outstream1.WriteText('');
+                // OutStream1.WriteText(CRLF);
+                // OutStream1.WriteText(ChNew);
+                LineCount := LineCount + 1;
+
+            until InbSalesDocumentLine.Next = 0;
+
+        //     //CSA.GS 06/08/2018>>
+        OutStream1.WriteText(CRLF);
+
+        // OutStream1.WriteTexT('');
+        //     //<<
+
+
+        //     // FOOTER
+        Outstream1.WriteTexT('F' + Tab + Format(LineCount + 2));   //060920
+
+        TempBLOB.CreateInStream(Instream1);
+
+        DownloadFromStream(Instream1, '', '', '', FileName)
+
+
+
+
+
+
+
+
+
+
+    end;
+
+
+
 }
 
 
