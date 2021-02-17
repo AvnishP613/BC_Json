@@ -1,0 +1,1 @@
+{"Student":[{"Roll No.":"1","Name":"HG"},{"Roll No.":"2","Name":"AP"}],"Course":[{"CourseId":"C001","CourseName":"NAV"},{"CourseId":"C002","CourseName":"CRM"}]}
