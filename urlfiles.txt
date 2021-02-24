@@ -1,0 +1,69 @@
+https://api.businesscentral.dynamics.com/v2.0/8b9f2da5-4f14-4f19-991a-c1d1fc662694/zfuk/api/beta/companies(a52dfdd2-6850-eb11-bb53-000d3a29938e)/items
+
+https://api.businesscentral.dynamics.com/v2.0/8b9f2da5-4f14-4f19-991a-c1d1fc662694/ZFUK/api/ajk/demo/v2.0
+
+
+https://api.businesscentral.dynamics.com/v2.0/8b9f2da5-4f14-4f19-991a-c1d1fc662694/ZFUK/api/ajk/demo/v2.0/companies(a52dfdd2-6850-eb11-bb53-000d3a29938e)/headers
+
+https://github.com/microsoft/BCTech/tree/master/samples/CustomAPI
+
+
+
+https://www.kauffmann.nl/2020/05/05/deep-insert-with-business-central-apis/
+https://www.tharangac.com/2018/11/getting-started-with-dynamics-365-business-central-apis.html
+https://yzhums.com/6117/
+https://redthree.com/dynamics-nav-consultant-accessing-nav-cloud-data-intro-to-postman/
+https://docs.microsoft.com/en-us/dynamics365/business-central/dev-itpro/developer/devenv-develop-custom-api
+
+companies(<company id>)/carBrands
+
+companies(a52dfdd2-6850-eb11-bb53-000d3a29938e)/headers
+
+
+admin@bgk001.onmicrosoft.com
+
+admin@bgk001.onmicrosoft.com
+https://www.olisterr.tech/2019/09/understanding-apis-in-business-central.html
+ https://api.businesscentral.dynamics.com/v1.0/<TenantID>/api/v1.0/
+
+ https://api.businesscentral.dynamics.com/v2.0/8b9f2da5-4f14-4f19-991a-c1d1fc662694/zfuk/api/beta/companies
+
+https://docs.microsoft.com/en-us/dynamics365/business-central/dev-itpro/developer/devenv-connect-apps-tips
+https://community.dynamics.com/business/b/dkatson/posts/how-to-create-custom-apis-for-business-central-even-from-macos
+https://api.businesscentral.dynamics.com/v2.0/8b9f2da5-4f14-4f19-991a-c1d1fc662694/zfuk/api/beta/companies(<companyId>)/items
+
+ https://api.businesscentral.dynamics.com/v2.0/<TenantID>/api/v1.0/
+
+https://api.businesscentral.dynamics.com/v2.0/8b9f2da5-4f14-4f19-991a-c1d1fc662694/zfuk/api/beta/companies(a52dfdd2-6850-eb11-bb53-000d3a29938e)/items
+
+https://api.businesscentral.dynamics.com/v2.0/8b9f2da5-4f14-4f19-991a-c1d1fc662694/zfuk/api/beta/companies(a52dfdd2-6850-eb11-bb53-000d3a29938e)/api/ajk/demo/v.0/companies({{companyid}})/headers({{headerid}})
+
+https://api.businesscentral.dynamics.com/v1.0/b7268087-f626-4efe-ac43-37bfaafc16d8/sandbox/api/DmitryKatson/airplanes/beta
+
+https://api.businesscentral.dynamics.com/v1.0/b7268087-f626-4efe-ac43-37bfaafc16d8/sandbox/api/DmitryKatson/airplanes/beta
+
+https://api.businesscentral.dynamics.com/v2.0/8b9f2da5-4f14-4f19-991a-c1d1fc662694/ZFUK/api/ajk
+
+https://ksdconsultancy.blog/tag/postman/
+https://ksdconsultancy.blog/2019/01/16/api-business-central-part-1/
+https://www.tharangac.com/2018/11/getting-started-with-dynamics-365-business-central-apis.html
+
+
+<sandbox tenant id>/sandbox/api/<ApiPublisher>
+
+/<ApiGroup>/<ApiVersion>
+
+companies(CompanyID)/customers?$filter=<FilterField>%20<Opertor>%20%27<Value>%27
+
+https://api.businesscentral.dynamics.com/v2.0/8b9f2da5-4f14-4f19-991a-c1d1fc662694/api/v2.0/
+
+companies(a5e2cab9-7a67-eb11-86a3-0022481abe3e)/customers?$filter=<FilterField>%20<Opertor>%20%27<Value>%27
+
+https://api.businesscentral.dynamics.com/v2.0/8b9f2da5-4f14-4f19-991a-c1d1fc662694/zfuk/api/v1.0/
+
+{"@odata.context":"https://api.businesscentral.dynamics.com/v2.0/8b9f2da5-4f14-4f19-991a-c1d1fc662694/zfuk/api/beta/$metadata#companies",
+"value":[{"id":"a5e2cab9-7a67-eb11-86a3-0022481abe3e","systemVersion":"17.4.21491.21531","name":"Birmingham","displayName":"Birmingham","businessProfileId":"","systemCreatedAt":"2021-02-05T06:24:02.687Z","systemCreatedBy":"83aee147-423c-41eb-b9d4-a3646f27ef63","systemModifiedAt":"2021-02-05T06:24:02.687Z","systemModifiedBy":"83aee147-423c-41eb-b9d4-a3646f27ef63"},
+{"id":"a52dfdd2-6850-eb11-bb53-000d3a29938e","systemVersion":"17.4.21491.21531","name":"CRONUS UK Ltd.","displayName":"","businessProfileId":"","systemCreatedAt":"2021-01-06T21:47:55.517Z","systemCreatedBy":"00000000-0000-0000-0000-000000000001","systemModifiedAt":"2021-01-06T21:47:55.517Z","systemModifiedBy":"00000000-0000-0000-0000-000000000001"},
+{"id":"314934e4-6850-eb11-bb53-000d3a29938e","systemVersion":"17.4.21491.21531","name":"My Company","displayName":"","businessProfileId":"","systemCreatedAt":"2021-01-06T21:48:22.137Z","systemCreatedBy":"00000000-0000-0000-0000-000000000001","systemModifiedAt":"2021-01-06T21:48:22.137Z","systemModifiedBy":"00000000-0000-0000-0000-000000000001"}]}
+
+

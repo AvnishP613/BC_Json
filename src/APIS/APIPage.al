@@ -9,6 +9,8 @@ page 60000 "My Header API"
     EntityName = 'header';
     DelayedInsert = true;
     ODataKeyFields = SystemId;
+    ApplicationArea = all;
+    UsageCategory = Documents;
 
     layout
     {
