@@ -1,7 +1,7 @@
 codeunit 50112 SendMail
 {
 
-    procedure GenerateBarCode(QRRec: record "QR Code"; QRCodeText: text)
+  /*   procedure GenerateBarCode(QRRec: record "QR Code"; QRCodeText: text)
     var
         Token: Label '2CuyVoMChUGjbrwbP6ajSU618U9mNYmhmzhNm2oc';
         URL: Label 'https://api.beyondbarcodes.de/v1/qr/%1?height=600';
@@ -44,7 +44,7 @@ codeunit 50112 SendMail
         //copystream(outstr, Instr);
 
 
-    end;
+    end; */
 
     /*        [EventSubscriber(ObjectType::Table, 38, 'OnBeforeValidateEvent', 'Location Code', false, false)]
         local procedure SetValidationtohide(var xRec: Record "Purchase Header"; var Rec: Record "Purchase Header"; CurrFieldNo: Integer)
@@ -187,11 +187,6 @@ codeunit 50112 SendMail
         //    end;
     end;
 
-    [EventSubscriber(ObjectType::Table, database::TEST, 'OnBeforeValidateEvent', 'Entry', false, false)]
-    local procedure MyProcedursse(CurrFieldNo: Integer; var Rec: Record TEST)
-    begin
-        Error('rrrrr');
-    end;
 
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Lines Instruction Mgt.", 'OnAfterSetSalesLineFilters', '', false, false)]
     local procedure MyProcedure(SalesHeader: Record "Sales Header"; var SalesLine: Record "Sales Line")
