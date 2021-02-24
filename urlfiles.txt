@@ -1,6 +1,10 @@
+https://api.businesscentral.dynamics.com/v2.0/8b9f2da5-4f14-4f19-991a-c1d1fc662694/zfuk/api/beta/companies
+
 https://api.businesscentral.dynamics.com/v2.0/8b9f2da5-4f14-4f19-991a-c1d1fc662694/zfuk/api/beta/companies(a52dfdd2-6850-eb11-bb53-000d3a29938e)/items
 
 https://api.businesscentral.dynamics.com/v2.0/8b9f2da5-4f14-4f19-991a-c1d1fc662694/ZFUK/api/ajk/demo/v2.0
+
+https://api.businesscentral.dynamics.com/v2.0/8b9f2da5-4f14-4f19-991a-c1d1fc662694/ZFUK/api/ajk/demo/v2.0/companies(a52dfdd2-6850-eb11-bb53-000d3a29938e)/carModels
 
 
 https://api.businesscentral.dynamics.com/v2.0/8b9f2da5-4f14-4f19-991a-c1d1fc662694/ZFUK/api/ajk/demo/v2.0/companies(a52dfdd2-6850-eb11-bb53-000d3a29938e)/headers
