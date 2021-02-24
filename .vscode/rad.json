@@ -1,1 +1,1 @@
-﻿{"Added":[],"Modified":[],"Removed":[]}
+﻿{"Added":[{"Id":60000,"Kind":10,"Name":"My Header","PackagePath":"/src/src/APIS/HeaderTable.al"},{"Id":60001,"Kind":10,"Name":"My Line","PackagePath":"/src/src/APIS/LineTable.al"},{"Id":60000,"Kind":12,"Name":"My Header API","PackagePath":"/src/src/APIS/APIPage.al"},{"Id":60001,"Kind":12,"Name":"MyAPILines","PackagePath":"/src/src/APIS/ApiLines.al"}],"Modified":[],"Removed":[]}
