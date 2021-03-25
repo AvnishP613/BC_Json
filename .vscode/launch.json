@@ -7,7 +7,7 @@
             "request": "launch",
             "type": "al",
             "environmentType": "Sandbox",
-            "environmentName": "ZFUK",
+            "environmentName": "sandbox",
             "startupObjectId": 22,
             "startupObjectType": "Page",
             "breakOnError": true,

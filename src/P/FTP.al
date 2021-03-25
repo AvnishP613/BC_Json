@@ -111,3 +111,33 @@ procedure SendImageToFTP(ArtID: Code[100]; SalesOrderNo: Code[20]; SubFolderName
             //Message(ResponseText);
         END;
     END;
+
+
+    EmailSplits('abc@gmail.com;xyz@gmail.com');
+
+SmtpMail: Codeunit "SMTP Mail";
+SmtpConf: Record "SMTP Mail Setup";
+EmailBody: text;
+
+SmtpMail.CreateMessage('Checking multiple Emails', SmtpConf."User ID", 
+                        Receipt, 'Emails ', EmailBody, true);
+        
+    local procedure EmailSplits(EmaifieldValue: Text[250])
+    var
+        PosBgn: Integer;
+        ValueLength: integer;
+        PosEnd: Integer;
+        SplitValue: Text;
+    begin
+        PosBgn := 1;
+        ValueLength := STRLEN(EmaifieldValue);
+        REPEAT
+            IF STRPOS(EmaifieldValue, ';') = 0 THEN
+                PosEnd := ValueLength
+            ELSE
+                PosEnd := (STRPOS(EmaifieldValue, ';') - 1);
+            SplitValue := COPYSTR(EmaifieldValue, PosBgn, PosEnd);
+            EmaifieldValue := DELSTR(EmaifieldValue, 1, PosEnd + 1);
+            Receipt.Add(SplitValue);
+        UNTIL EmaifieldValue = '';
+    end;
