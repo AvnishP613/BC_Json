@@ -1,0 +1,17 @@
+{
+    "@odata.context": "https://api.businesscentral.dynamics.com/v2.0/cefd5a30-f05b-4a7c-9fe0-f05bed399162/sandbox/api/bctech/demo/v1.0/$metadata#companies(22532cc2-a87a-eb11-bb67-000d3a39219f)/students",
+    "value": [
+        {
+            "@odata.etag": "W/\"JzQ0O2FTN2Q3WE1wZU1IU2Q3RVkwSDBMRWlaLzMzVCtZNnBONjhRcXkvUTBGdVE9MTswMDsn\"",
+            "id": "8cdf9074-1291-eb11-8ce2-000d3a56defd",
+            "name": "Kat",
+            "enrollmentid": "001"
+        },
+        {
+            "@odata.etag": "W/\"JzQ0O052aCtuUWh2VUVFeDlSWThFQlJFeTZYQklvYmhPWE5jYWNhd2lySWlKZWc9MTswMDsn\"",
+            "id": "076430d0-3791-eb11-8ce2-000d3a56defd",
+            "name": "Rehman",
+            "enrollmentid": "KIT0001"
+        }
+    ]
+}
