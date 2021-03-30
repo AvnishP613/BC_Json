@@ -1,0 +1,1148 @@
+OBJECT Table 454 Approval Entry
+{
+  OBJECT-PROPERTIES
+  {
+    Date=27/11/19;
+    Time=17:13:27;
+    Modified=Yes;
+    Version List=NAVW17.00,MH1.0;
+  }
+  PROPERTIES
+  {
+    CaptionML=[ENU=Approval Entry;
+               ENN=Approval Entry];
+  }
+  FIELDS
+  {
+    { 1   ;   ;Table ID            ;Integer       ;CaptionML=[ENU=Table ID;
+                                                              ENN=Table ID] }
+    { 2   ;   ;Document Type       ;Option        ;CaptionML=[ENU=Document Type;
+                                                              ENN=Document Type];
+                                                   OptionCaptionML=[ENU=Quote,Order,Invoice,Credit Memo,Blanket Order,Return Order;
+                                                                    ENN=Quote,Order,Invoice,Credit Memo,Blanket Order,Return Order];
+                                                   OptionString=Quote,Order,Invoice,Credit Memo,Blanket Order,Return Order }
+    { 3   ;   ;Document No.        ;Code20        ;CaptionML=[ENU=Document No.;
+                                                              ENN=Document No.] }
+    { 4   ;   ;Sequence No.        ;Integer       ;CaptionML=[ENU=Sequence No.;
+                                                              ENN=Sequence No.] }
+    { 5   ;   ;Approval Code       ;Code20        ;CaptionML=[ENU=Approval Code;
+                                                              ENN=Approval Code] }
+    { 6   ;   ;Sender ID           ;Code50        ;CaptionML=[ENU=Sender ID;
+                                                              ENN=Sender ID] }
+    { 7   ;   ;Salespers./Purch. Code;Code10      ;CaptionML=[ENU=Salespers./Purch. Code;
+                                                              ENN=Salespers./Purch. Code] }
+    { 8   ;   ;Approver ID         ;Code50        ;CaptionML=[ENU=Approver ID;
+                                                              ENN=Approver ID] }
+    { 9   ;   ;Status              ;Option        ;CaptionML=[ENU=Status;
+                                                              ENN=Status];
+                                                   OptionCaptionML=[ENU=Created,Open,Canceled,Rejected,Approved;
+                                                                    ENN=Created,Open,Canceled,Rejected,Approved];
+                                                   OptionString=Created,Open,Canceled,Rejected,Approved }
+    { 10  ;   ;Date-Time Sent for Approval;DateTime;
+                                                   CaptionML=[ENU=Date-Time Sent for Approval;
+                                                              ENN=Date-Time Sent for Approval] }
+    { 11  ;   ;Last Date-Time Modified;DateTime   ;CaptionML=[ENU=Last Date-Time Modified;
+                                                              ENN=Last Date-Time Modified] }
+    { 12  ;   ;Last Modified By ID ;Code50        ;CaptionML=[ENU=Last Modified By ID;
+                                                              ENN=Last Modified By ID] }
+    { 13  ;   ;Comment             ;Boolean       ;FieldClass=FlowField;
+                                                   CalcFormula=Exist("Approval Comment Line" WHERE (Table ID=FIELD(Table ID),
+                                                                                                    Document Type=FIELD(Document Type),
+                                                                                                    Document No.=FIELD(Document No.)));
+                                                   CaptionML=[ENU=Comment;
+                                                              ENN=Comment];
+                                                   Editable=No }
+    { 14  ;   ;Due Date            ;Date          ;CaptionML=[ENU=Due Date;
+                                                              ENN=Due Date] }
+    { 15  ;   ;Amount              ;Decimal       ;CaptionML=[ENU=Amount;
+                                                              ENN=Amount];
+                                                   AutoFormatType=1;
+                                                   AutoFormatExpr="Currency Code" }
+    { 16  ;   ;Amount (LCY)        ;Decimal       ;CaptionML=[ENU=Amount (LCY);
+                                                              ENN=Amount (LCY)];
+                                                   AutoFormatType=1 }
+    { 17  ;   ;Currency Code       ;Code10        ;TableRelation=Currency;
+                                                   CaptionML=[ENU=Currency Code;
+                                                              ENN=Currency Code] }
+    { 18  ;   ;Approval Type       ;Option        ;CaptionML=[ENU=Approval Type;
+                                                              ENN=Approval Type];
+                                                   OptionCaptionML=[ENU=" ,Sales Pers./Purchaser,Approver";
+                                                                    ENN=" ,Sales Pers./Purchaser,Approver"];
+                                                   OptionString=[ ,Sales Pers./Purchaser,Approver] }
+    { 19  ;   ;Limit Type          ;Option        ;CaptionML=[ENU=Limit Type;
+                                                              ENN=Limit Type];
+                                                   OptionCaptionML=[ENU=Approval Limits,Credit Limits,Request Limits,No Limits;
+                                                                    ENN=Approval Limits,Credit Limits,Request Limits,No Limits];
+                                                   OptionString=Approval Limits,Credit Limits,Request Limits,No Limits }
+    { 20  ;   ;Available Credit Limit (LCY);Decimal;
+                                                   CaptionML=[ENU=Available Credit Limit (LCY);
+                                                              ENN=Available Credit Limit (LCY)] }
+    { 50000;  ;Entry No.           ;Integer       ;AutoIncrement=Yes }
+  }
+  KEYS
+  {
+    {    ;Table ID,Document Type,Document No.,Sequence No.;
+                                                   Clustered=Yes }
+    {    ;Approver ID,Status                       }
+    {    ;Sender ID                                }
+    {    ;Amount (LCY)                             }
+  }
+  FIELDGROUPS
+  {
+  }
+  CODE
+  {
+
+    PROCEDURE ShowDocument@1();
+    VAR
+      SalesHeader@1001 : Record 36;
+      PurchHeader@1000 : Record 38;
+    BEGIN
+      CASE "Table ID" OF
+        DATABASE::"Sales Header":
+          BEGIN
+            IF NOT SalesHeader.GET("Document Type","Document No.") THEN
+              EXIT;
+            CASE "Document Type" OF
+              "Document Type"::Quote:
+                PAGE.RUN(PAGE::"Sales Quote",SalesHeader);
+              "Document Type"::Order:
+                PAGE.RUN(PAGE::"Sales Order",SalesHeader);
+              "Document Type"::Invoice:
+                PAGE.RUN(PAGE::"Sales Invoice",SalesHeader);
+              "Document Type"::"Credit Memo":
+                PAGE.RUN(PAGE::"Sales Credit Memo",SalesHeader);
+              "Document Type"::"Blanket Order":
+                PAGE.RUN(PAGE::"Blanket Sales Order",SalesHeader);
+              "Document Type"::"Return Order":
+                PAGE.RUN(PAGE::"Sales Return Order",SalesHeader);
+            END;
+          END;
+        DATABASE::"Purchase Header":
+          BEGIN
+            IF NOT PurchHeader.GET("Document Type","Document No.") THEN
+              EXIT;
+            CASE "Document Type" OF
+              "Document Type"::Quote:
+                PAGE.RUN(PAGE::"Purchase Quote",PurchHeader);
+              "Document Type"::Order:
+                PAGE.RUN(PAGE::"Purchase Order",PurchHeader);
+              "Document Type"::Invoice:
+                PAGE.RUN(PAGE::"Purchase Invoice",PurchHeader);
+              "Document Type"::"Credit Memo":
+                PAGE.RUN(PAGE::"Purchase Credit Memo",PurchHeader);
+              "Document Type"::"Blanket Order":
+                PAGE.RUN(PAGE::"Blanket Purchase Order",PurchHeader);
+              "Document Type"::"Return Order":
+                PAGE.RUN(PAGE::"Purchase Return Order",PurchHeader);
+            END;
+          END;
+        ELSE
+          EXIT;
+      END;
+    END;
+
+    BEGIN
+    {
+
+      --New field added
+            50000 Buy-from Vendor Name[Text 50]
+    }
+    END.
+  }
+}
+
+OBJECT Codeunit 440 Approvals Mgt Notification
+{
+  OBJECT-PROPERTIES
+  {
+    Date=13/12/19;
+    Time=11:27:06;
+    Modified=Yes;
+    Version List=NAVW17.10;
+  }
+  PROPERTIES
+  {
+    Permissions=TableData 458=i;
+    OnRun=BEGIN
+          END;
+
+  }
+  CODE
+  {
+    VAR
+      AppSetup@1044 : Record 452;
+      SMTP@1000 : Codeunit 400;
+      SenderName@1001 : Text[100];
+      SenderAddress@1002 : Text[100];
+      Recipient@1003 : Text[100];
+      Subject@1004 : Text[100];
+      Body@1005 : Text;
+      InStreamTemplate@1009 : InStream;
+      InSReadChar@1008 : Text[1];
+      CharNo@1014 : Text[4];
+      I@1010 : Integer;
+      Text001@1007 : TextConst 'ENU=Sales %1;ENN=Sales %1';
+      Text002@1011 : TextConst 'ENU=Purchase %1;ENN=Purchase %1';
+      Text003@1012 : TextConst 'ENU=requires your approval system.;ENN=requires your approval.';
+      Text004@1013 : TextConst 'ENU=To view your documents for approval, please use Nav System;ENN=To view your documents for approval, please use this link';
+      Text005@1015 : TextConst 'ENU=Customer;ENN=Customer';
+      WebViewTok@1016 : TextConst '@@@=Opens the document in the Microsoft Dynamics NAV web client;ENU=Web view;ENN=Web view';
+      Text007@1017 : TextConst 'ENU="Microsoft Dynamics NAV: %1 Mail ";ENN=Microsoft Dynamics NAV: %1 Mail';
+      Text008@1018 : TextConst 'ENU=Approval;ENN=Approval';
+      Text009@1019 : TextConst 'ENU=Cancellation;ENN=Cancellation';
+      Text010@1020 : TextConst 'ENU=Rejection;ENN=Rejection';
+      Text011@1021 : TextConst 'ENU=Delegation;ENN=Delegation';
+      Text012@1022 : TextConst 'ENU=Overdue Approvals;ENN=Overdue Approvals';
+      Text013@1023 : TextConst 'ENU="Microsoft Dynamics NAV Document Approval System ";ENN=Microsoft Dynamics NAV Document Approval System';
+      Text014@1024 : TextConst 'ENU=has been cancelled.;ENN=has been cancelled.';
+      Text016@1026 : TextConst 'ENU=has been rejected.;ENN=has been rejected.';
+      Text018@1028 : TextConst 'ENU=Vendor;ENN=Vendor';
+      Text020@1030 : TextConst 'ENU=has been delegated.;ENN=has been delegated.';
+      Text022@1032 : TextConst 'ENU=Overdue approval;ENN=Overdue approval';
+      Text030@1033 : TextConst 'ENU=Not yet overdue;ENN=Not yet overdue';
+      Text033@1036 : TextConst 'ENU=Rejection comments:;ENN=Rejection comments:';
+      Text040@1037 : TextConst 'ENU=You must import an Approval Template in Approval Setup.;ENN=You must import an Approval Template in Approval Setup.';
+      Text041@1038 : TextConst 'ENU=You must import an Overdue Approval Template in Approval Setup.;ENN=You must import an Overdue Approval Template in Approval Setup.';
+      FromUser@1040 : Text[100];
+      Text042@1041 : TextConst 'ENU=Available Credit Limit (LCY);ENN=Available Credit Limit (LCY)';
+      Text043@1042 : TextConst 'ENU=Request Amount (LCY);ENN=Request Amount (LCY)';
+      MailCreated@1006 : Boolean;
+      OpenBracketTok@1025 : TextConst '@@@={Locked};ENU=(;ENN=(';
+      CloseBracketTok@1027 : TextConst '@@@={Locked};ENU=);ENN=)';
+      AppImg@1000000002 : TextConst 'ENU="<br/><span style=""display:inline-block; text-align:center; width:150px; height:50px; padding:15px; background-color:green;""><a style=""color:white;text-decoration:none;"" href=""http://111.93.229.90/NavApi/default/NavApi?id=%1&status=Approved"">Approve</a></span>"';
+      RejImg@1000000003 : TextConst 'ENU="&nbsp;&nbsp;&nbsp;&nbsp;<span style=""display:inline-block; text-align:center; width:150px; height:50px; padding:15px; background-color:red;""><a style=""color:white;text-decoration:none;"" href=""http://111.93.229.90/NavApi/default/NavApi?id=%1&status=Rejected"">Reject</a></span>"';
+
+    PROCEDURE SendSalesApprovalsMail@1(SalesHeader@1000 : Record 36;ApprovalEntry@1001 : Record 454);
+    BEGIN
+      SetTemplate(ApprovalEntry);
+      Subject := STRSUBSTNO(Text007,Text008);
+      Body := Text013;
+
+      SMTP.CreateMessage(SenderName,SenderAddress,Recipient,Subject,Body,TRUE);
+      Body := '';
+
+      WHILE InStreamTemplate.EOS = FALSE DO BEGIN
+        InStreamTemplate.READTEXT(InSReadChar,1);
+        IF InSReadChar = '%' THEN BEGIN
+          SMTP.AppendBody(Body);
+          Body := InSReadChar;
+          IF InStreamTemplate.READTEXT(InSReadChar,1) <> 0 THEN;
+          IF (InSReadChar >= '0') AND (InSReadChar <= '9') THEN BEGIN
+            Body := Body + '1';
+            CharNo := InSReadChar;
+            WHILE (InSReadChar >= '0') AND (InSReadChar <= '9') DO BEGIN
+              IF InStreamTemplate.READTEXT(InSReadChar,1) <> 0 THEN;
+              IF (InSReadChar >= '0') AND (InSReadChar <= '9') THEN
+                CharNo := CharNo + InSReadChar;
+            END;
+          END ELSE
+            Body := Body + InSReadChar;
+          FillSalesTemplate(Body,CharNo,SalesHeader,ApprovalEntry,0);
+          SMTP.AppendBody(Body);
+          Body := InSReadChar;
+        END ELSE BEGIN
+          Body := Body + InSReadChar;
+          I := I + 1;
+          IF I = 500 THEN BEGIN
+            SMTP.AppendBody(Body);
+            Body := '';
+            I := 0;
+          END;
+        END;
+      END;
+      SMTP.AppendBody(Body);
+      SMTP.Send;
+    END;
+
+    PROCEDURE SendPurchaseApprovalsMail@10(PurchaseHeader@1001 : Record 38;ApprovalEntry@1000 : Record 454);
+    BEGIN
+      SetTemplate(ApprovalEntry);
+      Subject := STRSUBSTNO(Text007,Text008);
+      Body := Text013;
+
+      SMTP.CreateMessage(SenderName,SenderAddress,Recipient,Subject,Body,TRUE);
+      Body := '';
+      //DSS_SB----------START
+      SMTP.AppendBody (STRSUBSTNO(AppImg,ApprovalEntry."Entry No.")+ STRSUBSTNO(RejImg,ApprovalEntry."Entry No."));
+      //DSS_SB----------END
+      WHILE InStreamTemplate.EOS = FALSE DO BEGIN
+        InStreamTemplate.READTEXT(InSReadChar,1);
+        IF InSReadChar = '%' THEN BEGIN
+          SMTP.AppendBody(Body);
+          Body := InSReadChar;
+          IF InStreamTemplate.READTEXT(InSReadChar,1) <> 0 THEN;
+          IF (InSReadChar >= '0') AND (InSReadChar <= '9') THEN BEGIN
+            Body := Body + '1';
+            CharNo := InSReadChar;
+            WHILE (InSReadChar >= '0') AND (InSReadChar <= '9') DO BEGIN
+              IF InStreamTemplate.READTEXT(InSReadChar,1) <> 0 THEN;
+              IF (InSReadChar >= '0') AND (InSReadChar <= '9') THEN
+                CharNo := CharNo + InSReadChar;
+            END;
+          END ELSE
+            Body := Body + InSReadChar;
+          FillPurchaseTemplate(Body,CharNo,PurchaseHeader,ApprovalEntry,0);
+          SMTP.AppendBody(Body);
+          Body := InSReadChar;
+        END ELSE BEGIN
+          Body := Body + InSReadChar;
+          I := I + 1;
+          IF I = 500 THEN BEGIN
+            SMTP.AppendBody(Body);
+            Body := '';
+            I := 0;
+          END;
+        END;
+      END;
+      SMTP.AppendBody(Body);
+      SMTP.Send;
+    END;
+
+    PROCEDURE SendSalesCancellationsMail@2(SalesHeader@1001 : Record 36;ApprovalEntry@1000 : Record 454);
+    BEGIN
+      IF MailCreated THEN BEGIN
+        GetEmailAddress(ApprovalEntry);
+        IF Recipient <> SenderAddress THEN
+          SMTP.AddCC(Recipient);
+      END ELSE BEGIN
+        SetTemplate(ApprovalEntry);
+        Subject := STRSUBSTNO(Text007,Text009);
+        Body := Text013;
+
+        SMTP.CreateMessage(SenderName,FromUser,SenderAddress,Subject,Body,TRUE);
+        IF Recipient <> SenderAddress THEN
+          SMTP.AddCC(Recipient);
+
+        Body := '';
+
+        WHILE InStreamTemplate.EOS = FALSE DO BEGIN
+          InStreamTemplate.READTEXT(InSReadChar,1);
+          IF InSReadChar = '%' THEN BEGIN
+            SMTP.AppendBody(Body);
+            Body := InSReadChar;
+            IF InStreamTemplate.READTEXT(InSReadChar,1) <> 0 THEN;
+            IF (InSReadChar >= '0') AND (InSReadChar <= '9') THEN BEGIN
+              Body := Body + '1';
+              CharNo := InSReadChar;
+              WHILE (InSReadChar >= '0') AND (InSReadChar <= '9') DO BEGIN
+                IF InStreamTemplate.READTEXT(InSReadChar,1) <> 0 THEN;
+                IF (InSReadChar >= '0') AND (InSReadChar <= '9') THEN
+                  CharNo := CharNo + InSReadChar;
+              END;
+            END ELSE
+              Body := Body + InSReadChar;
+            FillSalesTemplate(Body,CharNo,SalesHeader,ApprovalEntry,1);
+            SMTP.AppendBody(Body);
+            Body := InSReadChar;
+          END ELSE BEGIN
+            Body := Body + InSReadChar;
+            I := I + 1;
+            IF I = 500 THEN BEGIN
+              SMTP.AppendBody(Body);
+              Body := '';
+              I := 0;
+            END;
+          END;
+        END;
+        SMTP.AppendBody(Body);
+        MailCreated := TRUE;
+      END;
+    END;
+
+    PROCEDURE SendPurchaseCancellationsMail@11(PurchaseHeader@1001 : Record 38;ApprovalEntry@1000 : Record 454);
+    BEGIN
+      IF MailCreated THEN BEGIN
+        GetEmailAddress(ApprovalEntry);
+        IF Recipient <> SenderAddress THEN
+          SMTP.AddCC(Recipient);
+      END ELSE BEGIN
+        SetTemplate(ApprovalEntry);
+        Subject := STRSUBSTNO(Text007,Text009);
+        Body := Text013;
+
+        SMTP.CreateMessage(SenderName,FromUser,SenderAddress,Subject,Body,TRUE);
+        IF Recipient <> SenderAddress THEN
+          SMTP.AddCC(Recipient);
+        Body := '';
+
+        WHILE InStreamTemplate.EOS = FALSE DO BEGIN
+          InStreamTemplate.READTEXT(InSReadChar,1);
+          IF InSReadChar = '%' THEN BEGIN
+            SMTP.AppendBody(Body);
+            Body := InSReadChar;
+            IF InStreamTemplate.READTEXT(InSReadChar,1) <> 0 THEN;
+            IF (InSReadChar >= '0') AND (InSReadChar <= '9') THEN BEGIN
+              Body := Body + '1';
+              CharNo := InSReadChar;
+              WHILE (InSReadChar >= '0') AND (InSReadChar <= '9') DO BEGIN
+                IF InStreamTemplate.READTEXT(InSReadChar,1) <> 0 THEN;
+                IF (InSReadChar >= '0') AND (InSReadChar <= '9') THEN
+                  CharNo := CharNo + InSReadChar;
+              END;
+            END ELSE
+              Body := Body + InSReadChar;
+            FillPurchaseTemplate(Body,CharNo,PurchaseHeader,ApprovalEntry,1);
+            SMTP.AppendBody(Body);
+            Body := InSReadChar;
+          END ELSE BEGIN
+            Body := Body + InSReadChar;
+            I := I + 1;
+            IF I = 500 THEN BEGIN
+              SMTP.AppendBody(Body);
+              Body := '';
+              I := 0;
+            END;
+          END;
+        END;
+        SMTP.AppendBody(Body);
+        MailCreated := TRUE;
+      END;
+    END;
+
+    PROCEDURE SendSalesRejectionsMail@3(SalesHeader@1001 : Record 36;ApprovalEntry@1000 : Record 454);
+    VAR
+      AppCommentLine@1002 : Record 455;
+    BEGIN
+      IF MailCreated THEN BEGIN
+        GetEmailAddress(ApprovalEntry);
+        IF Recipient <> SenderAddress THEN
+          SMTP.AddCC(Recipient);
+      END ELSE BEGIN
+        SetTemplate(ApprovalEntry);
+        Subject := STRSUBSTNO(Text007,Text010);
+        Body := Text013;
+
+        SMTP.CreateMessage(SenderName,FromUser,SenderAddress,Subject,Body,TRUE);
+        SMTP.AddCC(Recipient);
+        Body := '';
+
+        WHILE InStreamTemplate.EOS = FALSE DO BEGIN
+          InStreamTemplate.READTEXT(InSReadChar,1);
+          IF InSReadChar = '%' THEN BEGIN
+            SMTP.AppendBody(Body);
+            Body := InSReadChar;
+            IF InStreamTemplate.READTEXT(InSReadChar,1) <> 0 THEN;
+            IF (InSReadChar >= '0') AND (InSReadChar <= '9') THEN BEGIN
+              Body := Body + '1';
+              CharNo := InSReadChar;
+              WHILE (InSReadChar >= '0') AND (InSReadChar <= '9') DO BEGIN
+                IF InStreamTemplate.READTEXT(InSReadChar,1) <> 0 THEN;
+                IF (InSReadChar >= '0') AND (InSReadChar <= '9') THEN
+                  CharNo := CharNo + InSReadChar;
+              END;
+            END ELSE
+              Body := Body + InSReadChar;
+            FillSalesTemplate(Body,CharNo,SalesHeader,ApprovalEntry,2);
+            SMTP.AppendBody(Body);
+            Body := InSReadChar;
+          END ELSE BEGIN
+            Body := Body + InSReadChar;
+            I := I + 1;
+            IF I = 500 THEN BEGIN
+              SMTP.AppendBody(Body);
+              Body := '';
+              I := 0;
+            END;
+          END;
+        END;
+        SMTP.AppendBody(Body);
+
+        // Append Comment Lines
+        ApprovalEntry.CALCFIELDS(Comment);
+        IF ApprovalEntry.Comment THEN BEGIN
+          AppCommentLine.SETCURRENTKEY("Table ID","Document Type","Document No.");
+          AppCommentLine.SETRANGE("Table ID",ApprovalEntry."Table ID");
+          AppCommentLine.SETRANGE("Document Type",ApprovalEntry."Document Type");
+          AppCommentLine.SETRANGE("Document No.",ApprovalEntry."Document No.");
+          IF AppCommentLine.FIND('-') THEN BEGIN
+            Body := STRSUBSTNO('<p class="MsoNormal"><font face="Arial size 2"><b>%1</b></font></p>',Text033);
+            SMTP.AppendBody(Body);
+            REPEAT
+              BuildCommentLine(AppCommentLine);
+            UNTIL AppCommentLine.NEXT = 0;
+          END;
+        END;
+        MailCreated := TRUE;
+      END;
+    END;
+
+    PROCEDURE SendPurchaseRejectionsMail@12(PurchaseHeader@1001 : Record 38;ApprovalEntry@1000 : Record 454);
+    VAR
+      AppCommentLine@1002 : Record 455;
+    BEGIN
+      IF MailCreated THEN BEGIN
+        GetEmailAddress(ApprovalEntry);
+        IF Recipient <> SenderAddress THEN
+          SMTP.AddCC(Recipient);
+      END ELSE BEGIN
+        SetTemplate(ApprovalEntry);
+        Subject := STRSUBSTNO(Text007,Text010);
+        Body := Text013;
+
+        SMTP.CreateMessage(SenderName,FromUser,SenderAddress,Subject,Body,TRUE);
+        SMTP.AddCC(Recipient);
+        Body := '';
+
+        WHILE InStreamTemplate.EOS = FALSE DO BEGIN
+          InStreamTemplate.READTEXT(InSReadChar,1);
+          IF InSReadChar = '%' THEN BEGIN
+            SMTP.AppendBody(Body);
+            Body := InSReadChar;
+            IF InStreamTemplate.READTEXT(InSReadChar,1) <> 0 THEN;
+            IF (InSReadChar >= '0') AND (InSReadChar <= '9') THEN BEGIN
+              Body := Body + '1';
+              CharNo := InSReadChar;
+              WHILE (InSReadChar >= '0') AND (InSReadChar <= '9') DO BEGIN
+                IF InStreamTemplate.READTEXT(InSReadChar,1) <> 0 THEN;
+                IF (InSReadChar >= '0') AND (InSReadChar <= '9') THEN
+                  CharNo := CharNo + InSReadChar;
+              END;
+            END ELSE
+              Body := Body + InSReadChar;
+            FillPurchaseTemplate(Body,CharNo,PurchaseHeader,ApprovalEntry,2);
+            SMTP.AppendBody(Body);
+            Body := InSReadChar;
+          END ELSE BEGIN
+            Body := Body + InSReadChar;
+            I := I + 1;
+            IF I = 500 THEN BEGIN
+              SMTP.AppendBody(Body);
+              Body := '';
+              I := 0;
+            END;
+          END;
+        END;
+        SMTP.AppendBody(Body);
+
+        // Append Comment Lines
+        ApprovalEntry.CALCFIELDS(Comment);
+        IF ApprovalEntry.Comment THEN BEGIN
+          AppCommentLine.SETCURRENTKEY("Table ID","Document Type","Document No.");
+          AppCommentLine.SETRANGE("Table ID",ApprovalEntry."Table ID");
+          AppCommentLine.SETRANGE("Document Type",ApprovalEntry."Document Type");
+          AppCommentLine.SETRANGE("Document No.",ApprovalEntry."Document No.");
+          IF AppCommentLine.FIND('-') THEN BEGIN
+            Body := STRSUBSTNO('<p class="MsoNormal"><font face="Arial size 2"><b>%1</b></font></p>',
+                Text033);
+            SMTP.AppendBody(Body);
+            REPEAT
+              BuildCommentLine(AppCommentLine);
+            UNTIL AppCommentLine.NEXT = 0;
+          END;
+        END;
+
+        MailCreated := TRUE;
+      END;
+    END;
+
+    PROCEDURE SendSalesDelegationsMail@4(SalesHeader@1001 : Record 36;ApprovalEntry@1000 : Record 454);
+    BEGIN
+      SetTemplate(ApprovalEntry);
+      Subject := STRSUBSTNO(Text007,Text011);
+      Body := Text013;
+
+      SMTP.CreateMessage(SenderName,FromUser,Recipient,Subject,Body,TRUE);
+      SMTP.AddCC(SenderAddress);
+      Body := '';
+
+      WHILE InStreamTemplate.EOS = FALSE DO BEGIN
+        InStreamTemplate.READTEXT(InSReadChar,1);
+        IF InSReadChar = '%' THEN BEGIN
+          SMTP.AppendBody(Body);
+          Body := InSReadChar;
+          IF InStreamTemplate.READTEXT(InSReadChar,1) <> 0 THEN;
+          IF (InSReadChar >= '0') AND (InSReadChar <= '9') THEN BEGIN
+            Body := Body + '1';
+            CharNo := InSReadChar;
+            WHILE (InSReadChar >= '0') AND (InSReadChar <= '9') DO BEGIN
+              IF InStreamTemplate.READTEXT(InSReadChar,1) <> 0 THEN;
+              IF (InSReadChar >= '0') AND (InSReadChar <= '9') THEN
+                CharNo := CharNo + InSReadChar;
+            END;
+          END ELSE
+            Body := Body + InSReadChar;
+          FillSalesTemplate(Body,CharNo,SalesHeader,ApprovalEntry,3);
+          SMTP.AppendBody(Body);
+          Body := InSReadChar;
+        END ELSE BEGIN
+          Body := Body + InSReadChar;
+          I := I + 1;
+          IF I = 500 THEN BEGIN
+            SMTP.AppendBody(Body);
+            Body := '';
+            I := 0;
+          END;
+        END;
+      END;
+      SMTP.AppendBody(Body);
+      SMTP.Send;
+    END;
+
+    PROCEDURE SendPurchaseDelegationsMail@13(PurchaseHeader@1000 : Record 38;ApprovalEntry@1001 : Record 454);
+    BEGIN
+      SetTemplate(ApprovalEntry);
+      Subject := STRSUBSTNO(Text007,Text011);
+      Body := Text013;
+
+      SMTP.CreateMessage(SenderName,FromUser,Recipient,Subject,Body,TRUE);
+      SMTP.AddCC(SenderAddress);
+      Body := '';
+
+      WHILE InStreamTemplate.EOS = FALSE DO BEGIN
+        InStreamTemplate.READTEXT(InSReadChar,1);
+        IF InSReadChar = '%' THEN BEGIN
+          SMTP.AppendBody(Body);
+          Body := InSReadChar;
+          IF InStreamTemplate.READTEXT(InSReadChar,1) <> 0 THEN;
+          IF (InSReadChar >= '0') AND (InSReadChar <= '9') THEN BEGIN
+            Body := Body + '1';
+            CharNo := InSReadChar;
+            WHILE (InSReadChar >= '0') AND (InSReadChar <= '9') DO BEGIN
+              IF InStreamTemplate.READTEXT(InSReadChar,1) <> 0 THEN;
+              IF (InSReadChar >= '0') AND (InSReadChar <= '9') THEN
+                CharNo := CharNo + InSReadChar;
+            END;
+          END ELSE
+            Body := Body + InSReadChar;
+          FillPurchaseTemplate(Body,CharNo,PurchaseHeader,ApprovalEntry,3);
+          SMTP.AppendBody(Body);
+          Body := InSReadChar;
+        END ELSE BEGIN
+          Body := Body + InSReadChar;
+          I := I + 1;
+          IF I = 500 THEN BEGIN
+            SMTP.AppendBody(Body);
+            Body := '';
+            I := 0;
+          END;
+        END;
+      END;
+      SMTP.AppendBody(Body);
+      SMTP.Send;
+    END;
+
+    PROCEDURE SendOverdueApprovalsMail@5(Reciever@1002 : Text[100];VAR AppEntriesNotDue@1000 : Record 454;VAR AppEntriesDue@1001 : Record 454);
+    VAR
+      AppSetUp@1003 : Record 452;
+      UserSetup@1004 : Record 91;
+      QtyAppEntries@1005 : Integer;
+      QytAppEntDue@1006 : Integer;
+    BEGIN
+      SetOverdueTemplate;
+      AppSetUp.GET;
+      AppSetUp.TESTFIELD("Approval Administrator");
+      UserSetup.GET(AppSetUp."Approval Administrator");
+      UserSetup.TESTFIELD("E-Mail");
+      SenderAddress := UserSetup."E-Mail";
+      Recipient := Reciever;
+      Subject := STRSUBSTNO(Text007,Text012);
+      Body := Text013;
+
+      QtyAppEntries := AppEntriesNotDue.COUNT;
+      QytAppEntDue := AppEntriesDue.COUNT;
+
+      SMTP.CreateMessage(SenderName,SenderAddress,Recipient,Subject,Body,TRUE);
+
+      Body := '';
+
+      WHILE InStreamTemplate.EOS = FALSE DO BEGIN
+        InStreamTemplate.READTEXT(InSReadChar,1);
+        IF InSReadChar = '%' THEN BEGIN
+          SMTP.AppendBody(Body);
+          Body := InSReadChar;
+          IF InStreamTemplate.READTEXT(InSReadChar,1) <> 0 THEN;
+          IF (InSReadChar >= '0') AND (InSReadChar <= '9') THEN BEGIN
+            Body := Body + '1';
+            CharNo := InSReadChar;
+            WHILE (InSReadChar >= '0') AND (InSReadChar <= '9') DO BEGIN
+              IF InStreamTemplate.READTEXT(InSReadChar,1) <> 0 THEN;
+              IF (InSReadChar >= '0') AND (InSReadChar <= '9') THEN
+                CharNo := CharNo + InSReadChar;
+            END;
+          END ELSE
+            Body := Body + InSReadChar;
+          CASE CharNo OF
+            '1':
+              Body := '';
+            '2':
+              Body := STRSUBSTNO(Body,Text004);
+            '5':
+              Body := STRSUBSTNO(Body,GetApprovalEntriesWinUri);
+            '19':
+              Body := STRSUBSTNO(Body,GetApprovalEntriesWebUri);
+            '20':
+              Body := STRSUBSTNO(Body,WebViewTok);
+            '21':
+              Body := STRSUBSTNO(Body,OpenBracketTok);
+            '22':
+              Body := STRSUBSTNO(Body,CloseBracketTok);
+          END;
+          SMTP.AppendBody(Body);
+          Body := InSReadChar;
+        END ELSE BEGIN
+          Body := Body + InSReadChar;
+          I := I + 1;
+          IF I = 500 THEN BEGIN
+            SMTP.AppendBody(Body);
+            Body := '';
+            I := 0;
+          END;
+        END;
+      END;
+      SMTP.AppendBody(Body);
+
+      // Find Approval entries overdue and append to template
+      IF QytAppEntDue > 0 THEN BEGIN
+        Body := STRSUBSTNO('<p class="MsoNormal"><font face="Arial size 2"><b>%1</b></font></p>',Text022);
+        SMTP.AppendBody(Body);
+        IF AppEntriesDue.FIND('-') THEN
+          REPEAT
+            BuildOverdueLine(AppEntriesDue);
+            InsertOverdueLogEntries(AppEntriesDue);
+          UNTIL AppEntriesDue.NEXT = 0;
+      END;
+
+      // Find Approval entries not overdue and append to template
+      IF QtyAppEntries > 0 THEN BEGIN
+        Body := STRSUBSTNO('<p class="MsoNormal"><font face="Arial size 2"><b>%1</b></font></p>',Text030);
+        SMTP.AppendBody(Body);
+        IF AppEntriesNotDue.FIND('-') THEN
+          REPEAT
+            BuildDueLine(AppEntriesNotDue);
+          UNTIL AppEntriesNotDue.NEXT = 0;
+      END;
+      SMTP.Send;
+    END;
+
+    PROCEDURE GetEmailAddress@7(AppEntry@1000 : Record 454);
+    VAR
+      UserSetup@1001 : Record 91;
+    BEGIN
+      UserSetup.GET(AppEntry."Sender ID");
+      UserSetup.TESTFIELD("E-Mail");
+      SenderAddress := UserSetup."E-Mail";
+      UserSetup.GET(AppEntry."Approver ID");
+      UserSetup.TESTFIELD("E-Mail");
+      Recipient := UserSetup."E-Mail";
+      UserSetup.GET(USERID);
+      UserSetup.TESTFIELD("E-Mail");
+      FromUser := UserSetup."E-Mail";
+    END;
+
+    PROCEDURE CheckEntriesDue@9(DueDate@1001 : Date);
+    VAR
+      UserSetup@1006 : Record 91;
+      AppEnt@1005 : TEMPORARY Record 454;
+      AppEntDue@1000 : TEMPORARY Record 454;
+      AppEntries@1003 : Record 454;
+      ApprovalMgt@1002 : Codeunit 440;
+      OverdueFound@1004 : Boolean;
+    BEGIN
+      IF UserSetup.FIND('-') THEN BEGIN
+        UserSetup.TESTFIELD("E-Mail");
+        REPEAT
+          OverdueFound := FALSE;
+          AppEnt.DELETEALL;
+          AppEntDue.DELETEALL;
+          AppEntries.SETCURRENTKEY("Approver ID",Status);
+          AppEntries.SETRANGE("Approver ID",UserSetup."User ID");
+          AppEntries.SETRANGE(Status,AppEntries.Status::Open);
+          IF AppEntries.FIND('-') THEN BEGIN
+            REPEAT
+              IF AppEntries."Due Date" <= DueDate THEN BEGIN
+                AppEntDue := AppEntries;
+                AppEntDue.INSERT;
+                OverdueFound := TRUE;
+              END ELSE BEGIN
+                AppEnt := AppEntries;
+                AppEnt.INSERT;
+              END;
+            UNTIL AppEntries.NEXT = 0;
+            IF OverdueFound THEN
+              ApprovalMgt.SendOverdueApprovalsMail(UserSetup."E-Mail",AppEnt,AppEntDue);
+          END;
+        UNTIL UserSetup.NEXT = 0;
+      END;
+    END;
+
+    PROCEDURE FillSalesTemplate@14(VAR Body@1000 : Text;FieldNo@1001 : Text[30];Header@1002 : Record 36;AppEntry@1003 : Record 454;CalledFrom@1004 : 'Approve,Cancel,Reject,Delegate');
+    BEGIN
+      CASE FieldNo OF
+        '1':
+          Body := STRSUBSTNO(Text001,Header."Document Type");
+        '2':
+          Body := STRSUBSTNO(Body,Header."No.");
+        '3':
+          CASE CalledFrom OF
+            CalledFrom::Approve:
+              Body := STRSUBSTNO(Body,Text003);
+            CalledFrom::Cancel:
+              Body := STRSUBSTNO(Body,Text014);
+            CalledFrom::Reject:
+              Body := STRSUBSTNO(Body,Text016);
+            CalledFrom::Delegate:
+              Body := STRSUBSTNO(Body,Text020);
+          END;
+        '4':
+          IF CalledFrom IN [CalledFrom::Approve,CalledFrom::Cancel,CalledFrom::Reject,CalledFrom::Delegate] THEN
+            Body := '';
+        '5':
+          Body := STRSUBSTNO(Body,GetApprovalEntriesWinUri);
+        '6':
+          Body := STRSUBSTNO(Body,Text004);
+        '7':
+          Body := STRSUBSTNO(Body,AppEntry.FIELDCAPTION(Amount));
+        '8':
+          Body := STRSUBSTNO(Body,AppEntry."Currency Code");
+        '9':
+          Body := STRSUBSTNO(Body,AppEntry.Amount);
+        '10':
+          Body := STRSUBSTNO(Body,AppEntry.FIELDCAPTION("Amount (LCY)"));
+        '11':
+          Body := STRSUBSTNO(Body,AppEntry."Amount (LCY)");
+        '12':
+          Body := STRSUBSTNO(Body,Text005);
+        '13':
+          Body := STRSUBSTNO(Body,Header."Bill-to Customer No.");
+        '14':
+          Body := STRSUBSTNO(Body,Header."Bill-to Name");
+        '15':
+          Body := STRSUBSTNO(Body,AppEntry.FIELDCAPTION("Due Date"));
+        '16':
+          Body := STRSUBSTNO(Body,AppEntry."Due Date");
+        '17':
+          Body := Text042;
+        '18':
+          Body := STRSUBSTNO(Body,AppEntry."Available Credit Limit (LCY)");
+        '19':
+          Body := STRSUBSTNO(Body,GetApprovalEntriesWebUri);
+        '20':
+          Body := STRSUBSTNO(Body,WebViewTok);
+        '21':
+          Body := STRSUBSTNO(Body,OpenBracketTok);
+        '22':
+          Body := STRSUBSTNO(Body,CloseBracketTok);
+      END;
+    END;
+
+    PROCEDURE FillPurchaseTemplate@15(VAR Body@1000 : Text;FieldNo@1001 : Text[30];Header@1002 : Record 38;AppEntry@1003 : Record 454;CalledFrom@1004 : 'Approve,Cancel,Reject,Delegate');
+    BEGIN
+      CASE FieldNo OF
+        '1':
+          Body := STRSUBSTNO(Text002,Header."Document Type");
+        '2':
+          Body := STRSUBSTNO(Body,Header."No.");
+        '3':
+          CASE CalledFrom OF
+            CalledFrom::Approve:
+              Body := STRSUBSTNO(Body,Text003);
+            CalledFrom::Cancel:
+              Body := STRSUBSTNO(Body,Text014);
+            CalledFrom::Reject:
+              Body := STRSUBSTNO(Body,Text016);
+            CalledFrom::Delegate:
+              Body := STRSUBSTNO(Body,Text020);
+          END;
+        '4':
+          IF CalledFrom IN [CalledFrom::Approve,CalledFrom::Cancel,CalledFrom::Reject,CalledFrom::Delegate] THEN
+            Body := '';
+        '5':
+          Body := STRSUBSTNO(Body,GetApprovalEntriesWinUri);
+        '6':
+          Body := STRSUBSTNO(Body,Text004);
+        '7':
+          Body := STRSUBSTNO(Body,AppEntry.FIELDCAPTION(Amount));
+        '8':
+          Body := STRSUBSTNO(Body,AppEntry."Currency Code");
+        '9':
+          Body := STRSUBSTNO(Body,AppEntry.Amount);
+        '10':
+          Body := STRSUBSTNO(Body,AppEntry.FIELDCAPTION("Amount (LCY)"));
+        '11':
+          Body := STRSUBSTNO(Body,AppEntry."Amount (LCY)");
+        '12':
+          Body := STRSUBSTNO(Body,Text018);
+        '13':
+          Body := STRSUBSTNO(Body,Header."Pay-to Vendor No.");
+        '14':
+          Body := STRSUBSTNO(Body,Header."Pay-to Name");
+        '15':
+          Body := STRSUBSTNO(Body,AppEntry.FIELDCAPTION("Due Date"));
+        '16':
+          Body := STRSUBSTNO(Body,AppEntry."Due Date");
+        '17':
+          BEGIN
+            IF AppEntry."Limit Type" = AppEntry."Limit Type"::"Request Limits" THEN
+              Body := Text043
+            ELSE
+              Body := ' ';
+          END;
+        '18':
+          BEGIN
+            IF AppEntry."Limit Type" = AppEntry."Limit Type"::"Request Limits" THEN
+              Body := STRSUBSTNO(Body,AppEntry."Amount (LCY)")
+            ELSE
+              Body := ' ';
+          END;
+          //PwcHA
+          {
+        '19':
+          Body := STRSUBSTNO(Body,GetApprovalEntriesWebUri);
+        '20':
+          Body := STRSUBSTNO(Body,WebViewTok);
+          }
+          //PwcHA
+        '21':
+          Body := STRSUBSTNO(Body,OpenBracketTok);
+        '22':
+          Body := STRSUBSTNO(Body,CloseBracketTok);
+      END;
+    END;
+
+    PROCEDURE SetTemplate@25(AppEntry@1000 : Record 454);
+    BEGIN
+      AppSetup.GET;
+      AppSetup.CALCFIELDS("Approval Template");
+      IF NOT AppSetup."Approval Template".HASVALUE THEN
+        ERROR(Text040);
+      AppSetup."Approval Template".CREATEINSTREAM(InStreamTemplate);
+      SenderName := COMPANYNAME;
+      CLEAR(SenderAddress);
+      CLEAR(Recipient);
+      GetEmailAddress(AppEntry);
+    END;
+
+    PROCEDURE SetOverdueTemplate@16();
+    BEGIN
+      AppSetup.GET;
+      AppSetup.CALCFIELDS("Overdue Template");
+      IF NOT AppSetup."Overdue Template".HASVALUE THEN
+        ERROR(Text041);
+      AppSetup."Overdue Template".CREATEINSTREAM(InStreamTemplate);
+      SenderName := COMPANYNAME;
+    END;
+
+    PROCEDURE BuildOverdueLine@6(AppEntry@1001 : Record 454);
+    VAR
+      DueLine@1000 : Text[500];
+      TextType@1002 : Text[30];
+    BEGIN
+      CASE AppEntry."Table ID" OF
+        36:
+          TextType := 'Sales';
+        38:
+          TextType := 'Purchase';
+      END;
+      DueLine := '<p class="MsoNormal"><span style="font-family:Arial size 2">' +
+        FORMAT(TextType,10) + FORMAT(AppEntry."Document Type",15) +
+        FORMAT(AppEntry."Document No.",20) + FORMAT(AppEntry."Due Date",10) + '</span></p>';
+      SMTP.AppendBody(DueLine);
+    END;
+
+    PROCEDURE BuildDueLine@8(AppEntry@1000 : Record 454);
+    VAR
+      TextType@1001 : Text[500];
+      DueLine@1002 : Text[254];
+    BEGIN
+      CASE AppEntry."Table ID" OF
+        36:
+          TextType := 'Sales';
+        38:
+          TextType := 'Purchase';
+      END;
+      DueLine := '<p class="MsoNormal"><span style="font-family:Arial size 2">' +
+        FORMAT(TextType,10) + FORMAT(AppEntry."Document Type",15) +
+        FORMAT(AppEntry."Document No.",20) + FORMAT(AppEntry."Due Date",10) + '</span></p>';
+      SMTP.AppendBody(DueLine);
+    END;
+
+    PROCEDURE BuildCommentLine@17(Comments@1000 : Record 455);
+    VAR
+      CommentLine@1002 : Text[500];
+    BEGIN
+      CommentLine := '<p class="MsoNormal"><span style="font-family:Arial size 2">' +
+        Comments.Comment + '</span></p>';
+      SMTP.AppendBody(CommentLine);
+    END;
+
+    PROCEDURE InsertOverdueLogEntries@18(AppEntry@1000 : Record 454);
+    VAR
+      User@1002 : Record 2000000120;
+      LogEntries@1001 : Record 458;
+    BEGIN
+      LogEntries."Approver ID" := AppEntry."Approver ID";
+      User.SETRANGE("User Name",AppEntry."Approver ID");
+      IF User.FINDFIRST THEN
+        LogEntries."Sent to Name" := COPYSTR(User."Full Name",1,MAXSTRLEN(LogEntries."Sent to Name"));
+
+      LogEntries."Table ID" := AppEntry."Table ID";
+      LogEntries."Document Type" := AppEntry."Document Type";
+      LogEntries."Document No." := AppEntry."Document No.";
+      LogEntries."Sent to ID" := AppEntry."Approver ID";
+      LogEntries."Sent Date" := TODAY;
+      LogEntries."Sent Time" := TIME;
+      LogEntries."E-Mail" := Recipient;
+      LogEntries."Sequence No." := AppEntry."Sequence No.";
+      LogEntries."Due Date" := AppEntry."Due Date";
+      LogEntries."Approval Code" := AppEntry."Approval Code";
+      LogEntries.INSERT;
+    END;
+
+    PROCEDURE LaunchCheck@20(RunDate@1004 : Date);
+    VAR
+      ApprovalMannagement@1001 : Codeunit 440;
+    BEGIN
+      ApprovalMannagement.CheckEntriesDue(RunDate);
+    END;
+
+    PROCEDURE SendMail@19();
+    BEGIN
+      SMTP.Send;
+      MailCreated := FALSE;
+    END;
+
+    LOCAL PROCEDURE GetApprovalEntriesWinUri@22() : Text;
+    BEGIN
+      // Generates a url to the Approval Entries list page, such as
+      // dynamicsnav://server:port/instance/company/runpage?page=658<?Tenant=tenantId>.
+      EXIT(GETURL(CLIENTTYPE::Windows,COMPANYNAME,OBJECTTYPE::Page,PAGE::"Approval Entries"));
+    END;
+
+    LOCAL PROCEDURE GetApprovalEntriesWebUri@21() : Text;
+    BEGIN
+      // Generates a url to the Approval Entries list page, such as
+      // http://server:port/instance/WebClient/company/runpage?page=658<?Tenant=tenantId>.
+      //EXIT(GETURL(CLIENTTYPE::Web,COMPANYNAME,OBJECTTYPE::Page,PAGE::"Approval Entries"));
+    END;
+
+    BEGIN
+    END.
+  }
+}
+
+OBJECT Codeunit 50022 ApprovalEntry1
+{
+  OBJECT-PROPERTIES
+  {
+    Date=10/12/19;
+    Time=14:54:10;
+    Modified=Yes;
+    Version List=DSS-SB;
+  }
+  PROPERTIES
+  {
+    OnRun=BEGIN
+          END;
+
+  }
+  CODE
+  {
+    VAR
+      PurchaseHeader@1000000002 : Record 38;
+      ApprovalEntry@1000000001 : Record 454;
+      ReleasePurchaseDoc@1000000000 : Codeunit 415;
+
+    PROCEDURE DocApproval@1000000000(EntryNo@1000000000 : Integer);
+    BEGIN
+      ApprovalEntry.RESET;
+      ApprovalEntry.SETRANGE(ApprovalEntry."Entry No.",EntryNo);
+      IF ApprovalEntry.FINDFIRST THEN BEGIN
+          IF PurchaseHeader.GET(ApprovalEntry."Document Type",ApprovalEntry."Document No.") THEN BEGIN
+            PurchaseHeader."Order Date":=TODAY;
+            IF PurchaseHeader."1st Approval Date" = 0D THEN
+               PurchaseHeader."1st Approval Date" := TODAY;
+            PurchaseHeader.MODIFY;
+            ReleasePurchaseDoc.RUN(PurchaseHeader);
+          END;
+      END
+    END;
+
+    PROCEDURE DocRejection@1000000001(EntryNo@1000000000 : Integer);
+    BEGIN
+      ApprovalEntry.RESET;
+      ApprovalEntry.SETRANGE(ApprovalEntry."Entry No.",EntryNo);
+      IF ApprovalEntry.FINDFIRST THEN BEGIN
+          PurchaseHeader.SETCURRENTKEY("Document Type","No.");
+          PurchaseHeader.SETRANGE("Document Type",ApprovalEntry."Document Type");
+          PurchaseHeader.SETRANGE("No.",ApprovalEntry."Document No.");
+          IF PurchaseHeader.FINDFIRST THEN
+            ReleasePurchaseDoc.fctReject(PurchaseHeader);
+       END;
+    END;
+
+    BEGIN
+    END.
+  }
+}
+
+OBJECT Page 50016 ApprovalEntry
+{
+  OBJECT-PROPERTIES
+  {
+    Date=10/12/19;
+    Time=12:44:09;
+    Modified=Yes;
+    Version List=DSS-SB;
+  }
+  PROPERTIES
+  {
+    SourceTable=Table454;
+    PageType=List;
+  }
+  CONTROLS
+  {
+    { 1000000000;0;Container;
+                ContainerType=ContentArea }
+
+    { 1000000001;1;Group  ;
+                Name=Group;
+                GroupType=Repeater }
+
+    { 1000000002;2;Field  ;
+                SourceExpr="Entry No." }
+
+    { 1000000006;2;Field  ;
+                SourceExpr=Status }
+
+  }
+  CODE
+  {
+    VAR
+      PurchaseHeader@1000000000 : Record 38;
+      ApprovalEntry@1000000001 : Record 454;
+      ReleasePurchaseDoc@1000000002 : Codeunit 415;
+
+    PROCEDURE DocApproval@1000000000(EntryNo@1000000000 : Integer);
+    BEGIN
+      ApprovalEntry.RESET;
+      ApprovalEntry.SETRANGE(ApprovalEntry."Entry No.",EntryNo);
+      IF ApprovalEntry.FINDFIRST THEN BEGIN
+          IF PurchaseHeader.GET(ApprovalEntry."Document Type",ApprovalEntry."Document No.") THEN BEGIN
+            PurchaseHeader."Order Date":=TODAY;
+            IF PurchaseHeader."1st Approval Date" = 0D THEN
+               PurchaseHeader."1st Approval Date" := TODAY;
+            PurchaseHeader.MODIFY;
+            ReleasePurchaseDoc.RUN(PurchaseHeader);
+          END;
+      END
+    END;
+
+    PROCEDURE DocRejection@1000000001(EntryNo@1000000000 : Integer);
+    BEGIN
+      ApprovalEntry.RESET;
+      ApprovalEntry.SETRANGE(ApprovalEntry."Entry No.",EntryNo);
+      IF ApprovalEntry.FINDFIRST THEN BEGIN
+          PurchaseHeader.SETCURRENTKEY("Document Type","No.");
+          PurchaseHeader.SETRANGE("Document Type",ApprovalEntry."Document Type");
+          PurchaseHeader.SETRANGE("No.",ApprovalEntry."Document No.");
+          IF PurchaseHeader.FINDFIRST THEN
+            ReleasePurchaseDoc.fctReject(PurchaseHeader);
+       END;
+    END;
+
+    BEGIN
+    END.
+  }
+}
+
