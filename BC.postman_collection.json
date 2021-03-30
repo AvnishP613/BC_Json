@@ -1,0 +1,198 @@
+{
+	"info": {
+		"_postman_id": "bb71cf46-96e0-4bb5-a302-b2ee858baf4d",
+		"name": "BC",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "https://api.businesscentral.dynamics.com/v2.0/8b9f2da5-4f14-4f19-991a-c1d1fc662694/ZFUK/api/ajk/demo/v2.0/companies(a52dfdd2-6850-eb11-bb53-000d3a29938e)/carModels",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "oK4k7zE/tk7YYzzfnroXueEaY/2KbFecTC2QSVhw9T4=",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "ADMIN",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"Code\": 2,\r\n    \"In64bitValue\": \"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\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://api.businesscentral.dynamics.com/v2.0/cefd5a30-f05b-4a7c-9fe0-f05bed399162/sandbox/api/demo/demo/v2.0/companies(22532cc2-a87a-eb11-bb67-000d3a39219f)/apiattachments",
+					"protocol": "https",
+					"host": [
+						"api",
+						"businesscentral",
+						"dynamics",
+						"com"
+					],
+					"path": [
+						"v2.0",
+						"cefd5a30-f05b-4a7c-9fe0-f05bed399162",
+						"sandbox",
+						"api",
+						"demo",
+						"demo",
+						"v2.0",
+						"companies(22532cc2-a87a-eb11-bb67-000d3a39219f)",
+						"apiattachments"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "https://api.businesscentral.dynamics.com/v2.0/8b9f2da5-4f14-4f19-991a-c1d1fc662694/zfuk/api/beta/companies(a52dfdd2-6850-eb11-bb53-000d3a29938e)/items",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "oK4k7zE/tk7YYzzfnroXueEaY/2KbFecTC2QSVhw9T4=",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "ADMIN",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://api.businesscentral.dynamics.com/v2.0/cefd5a30-f05b-4a7c-9fe0-f05bed399162/sandbox/api/beta/companies(22532cc2-a87a-eb11-bb67-000d3a39219f)/items",
+					"protocol": "https",
+					"host": [
+						"api",
+						"businesscentral",
+						"dynamics",
+						"com"
+					],
+					"path": [
+						"v2.0",
+						"cefd5a30-f05b-4a7c-9fe0-f05bed399162",
+						"sandbox",
+						"api",
+						"beta",
+						"companies(22532cc2-a87a-eb11-bb67-000d3a39219f)",
+						"items"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "https://api.businesscentral.dynamics.com/v2.0/8b9f2da5-4f14-4f19-991a-c1d1fc662694/zfuk/api/v2.0/companies",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "oK4k7zE/tk7YYzzfnroXueEaY/2KbFecTC2QSVhw9T4=",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "ADMIN",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://api.businesscentral.dynamics.com/v2.0/cefd5a30-f05b-4a7c-9fe0-f05bed399162/sandbox/api/v2.0/companies",
+					"protocol": "https",
+					"host": [
+						"api",
+						"businesscentral",
+						"dynamics",
+						"com"
+					],
+					"path": [
+						"v2.0",
+						"cefd5a30-f05b-4a7c-9fe0-f05bed399162",
+						"sandbox",
+						"api",
+						"v2.0",
+						"companies"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POSTSTUDENT",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "oK4k7zE/tk7YYzzfnroXueEaY/2KbFecTC2QSVhw9T4=",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "ADMIN",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "  {\r\n            \"@odata.etag\": \"W/\\\"JzQ0O2FTN2Q3WE1wZU1IU2Q3RVkwSDBMRWlaLzMzVCtZNnBONjhRcXkvUTBGdVE9MTswMDsn\\\"\",\r\n            \"id\": \"8cdf9074-1291-eb11-8ce2-000d3a56defd\",\r\n            \"name\": \"Kat\",\r\n            \"enrollmentId\": \"001\"\r\n        }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://api.businesscentral.dynamics.com/v2.0/cefd5a30-f05b-4a7c-9fe0-f05bed399162/sandbox/api/bctech/demo/v1.0/companies(22532cc2-a87a-eb11-bb67-000d3a39219f)/students",
+					"protocol": "https",
+					"host": [
+						"api",
+						"businesscentral",
+						"dynamics",
+						"com"
+					],
+					"path": [
+						"v2.0",
+						"cefd5a30-f05b-4a7c-9fe0-f05bed399162",
+						"sandbox",
+						"api",
+						"bctech",
+						"demo",
+						"v1.0",
+						"companies(22532cc2-a87a-eb11-bb67-000d3a39219f)",
+						"students"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
